@@ -1,14 +1,26 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
-import Home from '../pages/Home';
 
-const Stack = createStackNavigator();
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import CocktailNavigator from './CocktailNavigator';
+import styled from 'styled-components';
+import SearchNavigator from './SearchNavigator';
+
+const Input = styled.TextInput`
+  border: 1px solid #e5e5e5;
+`;
+
+const Drawer = createDrawerNavigator();
 
 const AppNavigator = () => {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Home" component={Home} />
-    </Stack.Navigator>
+    <Drawer.Navigator
+      drawerContentOptions={{
+        headerTitle: 'Cocktail',
+      }}
+      initialRouteName="Search">
+      <Drawer.Screen name="Home" component={CocktailNavigator} />
+      <Drawer.Screen name="Search" component={SearchNavigator} />
+    </Drawer.Navigator>
   );
 };
 

@@ -1,14 +1,16 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 
 const Container = styled.SafeAreaView`
   flex: 1;
 `;
 
-const Home = () => {
+const Button = styled.Button``;
+
+const Home = ({navigation}) => {
   return (
     <Container>
-
+      <Button title="Details" onPress={() => navigation.navigate('Details')} />
     </Container>
   );
 };
