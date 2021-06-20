@@ -77,6 +77,7 @@ const Search = ({navigation}) => {
                   navigation.navigate('Details', {
                     id: item.idDrink,
                     name: item.strDrink,
+                    image: item.strDrinkThumb,
                   });
                 }}>
                 <ListText>{item.strDrink}</ListText>

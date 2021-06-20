@@ -10,9 +10,13 @@ export const search = async keyword => {
   return data;
 };
 
-export const searchById = async keyword => {
-  const url = `www.thecocktaildb.com/api/json/v2/${KEY}/lookup.php?i=${keyword}`;
-  const data = await axios.get(url);
+export const searchById = async id => {
+  try {
+    const url = `https://www.thecocktaildb.com/api/json/v2/${KEY}/lookup.php?i=${id}`;
+    const data = await axios.get(url);
 
-  return data;
+    return data;
+  } catch (err) {
+    return err;
+  }
 };
