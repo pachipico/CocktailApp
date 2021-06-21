@@ -19,7 +19,7 @@ const AppNavigator = () => {
       }}
       initialRouteName="Search">
       <Drawer.Screen name="Home" component={CocktailNavigator} />
-      <Drawer.Screen name="Search" component={SearchNavigator} />
+      <Drawer.Screen name="Search Cocktail" component={SearchNavigator} />
     </Drawer.Navigator>
   );
 };

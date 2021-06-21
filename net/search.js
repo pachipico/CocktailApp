@@ -20,3 +20,25 @@ export const searchById = async id => {
     return err;
   }
 };
+
+export const getPopular = async () => {
+  try {
+    const url = `https://www.thecocktaildb.com/api/json/v2/${KEY}/popular.php`;
+    const data = await axios.get(url);
+
+    return data;
+  } catch (err) {
+    return err;
+  }
+};
+
+export const getRandom = async () => {
+  try {
+    const url = `https://www.thecocktaildb.com/api/json/v2/${KEY}/randomselection.php`;
+    const data = await axios.get(url);
+
+    return data;
+  } catch (err) {
+    return err;
+  }
+};

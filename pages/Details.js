@@ -1,14 +1,17 @@
 import React, {useEffect, useState} from 'react';
+import {Image} from 'react-native';
 import styled from 'styled-components';
 import {searchById} from '../net/search';
+import {ActivityIndicator} from 'react-native';
 
-import {Button} from 'react-native';
-
+const Row = styled.View`
+  flex-direction: row;
+`;
 const Container = styled.SafeAreaView`
   flex: 1;
 `;
 const HeaderImg = styled.Image`
-  width: 50%;
+  width: 48%;
   height: 200px;
   margin: 12px;
   border-radius: 10px;
@@ -16,40 +19,46 @@ const HeaderImg = styled.Image`
 const Center = styled.View`
   align-items: center;
 `;
-
-const HeaderBox = styled.View`
+const HeaderBox = styled.ImageBackground`
   padding-top: 12px;
-  background: #e5e5e5;
 `;
-
 const HeaderText = styled.Text`
   font-size: 24px;
   font-weight: bold;
 `;
-const Row = styled.View`
-  flex-direction: row;
+const Content = styled.View`
+  padding: 12px;
+`;
+const BigText = styled.Text`
+  font-size: 30px;
+  font-weight: bold;
 `;
 const ListBox = styled.View`
   flex-direction: row;
 `;
 const List = styled.View`
-  padding-top: 40px;
+  padding-top: 20px;
   padding-left: 8px;
+  margin-left: 12px;
 `;
-
 const ListItem = styled.Text`
   font-style: italic;
   font-size: 14px;
   line-height: 24px;
 `;
+const Instructions = styled.Text`
+  padding: 20px;
+  font-size: 16px;
+  line-height: 26px;
+`;
 const Details = ({navigation, route}) => {
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
-    searchById(Number(route.params.id)).then(
-      result => setData(result.data.drinks[0]),
-      setIsLoading(false),
-    );
+    searchById(Number(route.params.id))
+      .then(result => setData(result.data.drinks[0]))
+      .then(setIsLoading(false));
   }, []);
   const renderIngredients = obj => {
     let ingredients = [];
@@ -66,30 +75,44 @@ const Details = ({navigation, route}) => {
     return (
       <ListBox>
         <List>
-          {ingredients.map((each, i) => (
-            <ListItem key={i}>{each}</ListItem>
-          ))}
+          {ingredients.map((each, i) => {
+            if (each) {
+              return <ListItem key={i}>{each}</ListItem>;
+            }
+          })}
         </List>
         <List>
-          {measurements.map((each, i) => (
-            <ListItem key={i}>{each}</ListItem>
-          ))}
+          {measurements.map((each, i) => {
+            if (each) {
+              return <ListItem key={i}>{each}</ListItem>;
+            }
+          })}
         </List>
       </ListBox>
     );
   };
   return (
     <Container>
-      {!isLoading && (
+      {isLoading ? (
+        <ActivityIndicator size="large" />
+      ) : (
         <>
-          <HeaderBox>
+          <HeaderBox blurRadius={68} source={{uri: data.strDrinkThumb}}>
             <Center>
               <HeaderText>{data.strDrink}</HeaderText>
             </Center>
 
             <HeaderImg source={{uri: data.strDrinkThumb}} />
           </HeaderBox>
-          {renderIngredients(data)}
+          <Content>
+            <BigText>Ingredients?</BigText>
+            {renderIngredients(data)}
+          </Content>
+          <Content>
+            <BigText>How To?</BigText>
+
+            <Instructions>{data?.strInstructions}</Instructions>
+          </Content>
         </>
       )}
     </Container>
