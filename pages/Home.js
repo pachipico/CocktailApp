@@ -5,6 +5,7 @@ import RenderCarousel from '../components/RenderCarousel';
 import RenderHorizontal from '../components/RenderHorizontal';
 import {getLatest, getPopular, getRandom} from '../net/search';
 import tinycolor from 'tinycolor2';
+import ImageColors from 'react-native-image-colors';
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -55,8 +56,13 @@ const Home = ({navigation}) => {
         setRefreshing(false);
       });
   }, []);
-  const onSnapChange = (index = 0) => {
+  const onSnapChange = async (index = 0) => {
     setSnapIndex(index);
+    let URI = random[index].strDrinkThumb;
+    let colors = await ImageColors.getColors(URI);
+    let color = tinycolor(colors.primary);
+
+    console.log(color.getBrightness());
   };
   return (
     <Container>
