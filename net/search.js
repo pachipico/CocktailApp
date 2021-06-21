@@ -42,3 +42,14 @@ export const getRandom = async () => {
     return err;
   }
 };
+
+export const getLatest = async () => {
+  try {
+    const url = `https://www.thecocktaildb.com/api/json/v2/${KEY}/latest.php`;
+    const data = await axios.get(url);
+
+    return data;
+  } catch (err) {
+    return err;
+  }
+};

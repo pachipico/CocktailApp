@@ -10,11 +10,12 @@ const Row = styled.View`
 const Container = styled.SafeAreaView`
   flex: 1;
 `;
+const ScrollView = styled.ScrollView``;
 const HeaderImg = styled.Image`
-  width: 48%;
   height: 200px;
   margin: 12px;
   border-radius: 10px;
+  flex: 1;
 `;
 const Center = styled.View`
   align-items: center;
@@ -25,6 +26,13 @@ const HeaderBox = styled.ImageBackground`
 const HeaderText = styled.Text`
   font-size: 24px;
   font-weight: bold;
+`;
+const TagsBox = styled.View`
+  flex: 1;
+  padding: 12px;
+`;
+const Tags = styled.Text`
+  font-size: 14px;
 `;
 const Content = styled.View`
   padding: 12px;
@@ -51,6 +59,7 @@ const Instructions = styled.Text`
   font-size: 16px;
   line-height: 26px;
 `;
+
 const Details = ({navigation, route}) => {
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -97,22 +106,29 @@ const Details = ({navigation, route}) => {
         <ActivityIndicator size="large" />
       ) : (
         <>
-          <HeaderBox blurRadius={68} source={{uri: data.strDrinkThumb}}>
-            <Center>
-              <HeaderText>{data.strDrink}</HeaderText>
-            </Center>
+          <ScrollView>
+            <HeaderBox blurRadius={20} source={{uri: data.strDrinkThumb}}>
+              <Center>
+                <HeaderText>{data.strDrink}</HeaderText>
+              </Center>
+              <Row>
+                <HeaderImg source={{uri: data.strDrinkThumb}} />
+                <TagsBox>
+                  <Tags>{data.strCategory}</Tags>
+                </TagsBox>
+              </Row>
+            </HeaderBox>
+            <Content>
+              <BigText>Ingredients?</BigText>
 
-            <HeaderImg source={{uri: data.strDrinkThumb}} />
-          </HeaderBox>
-          <Content>
-            <BigText>Ingredients?</BigText>
-            {renderIngredients(data)}
-          </Content>
-          <Content>
-            <BigText>How To?</BigText>
+              {renderIngredients(data)}
+            </Content>
+            <Content>
+              <BigText>How To?</BigText>
 
-            <Instructions>{data?.strInstructions}</Instructions>
-          </Content>
+              <Instructions>{data?.strInstructions}</Instructions>
+            </Content>
+          </ScrollView>
         </>
       )}
     </Container>
