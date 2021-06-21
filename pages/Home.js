@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import RenderCarousel from '../components/RenderCarousel';
 import RenderHorizontal from '../components/RenderHorizontal';
 import {getLatest, getPopular, getRandom} from '../net/search';
+import tinycolor from 'tinycolor2';
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -42,6 +43,8 @@ const Home = ({navigation}) => {
         }),
       )
       .then(setIsLoading(false));
+    let color = tinycolor('#aaaaaa');
+    console.log(color.getBrightness());
   }, []);
   const onRefresh = useCallback(() => {
     setRefreshing(true);
