@@ -17,7 +17,7 @@ const AppNavigator = () => {
       drawerContentOptions={{
         headerTitle: 'Cocktail',
       }}
-      initialRouteName="Search">
+      initialRouteName="Home">
       <Drawer.Screen name="Home" component={CocktailNavigator} />
       <Drawer.Screen name="Search Cocktail" component={SearchNavigator} />
     </Drawer.Navigator>

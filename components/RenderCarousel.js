@@ -45,9 +45,9 @@ const RenderCarousel = ({random, navigation, onSnapChange}) => {
       data={random}
       renderItem={renderItems}
       sliderWidth={SLIDER_WIDTH}
-      sliderHeight={250}
+      sliderHeight={240}
       itemWidth={273}
-      itemHeight={285}
+      itemHeight={280}
       loop={true}
       onSnapToItem={index => {
         onSnapChange(index);

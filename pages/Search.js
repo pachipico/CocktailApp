@@ -4,6 +4,9 @@ import {ActivityIndicator} from 'react-native';
 import styled from 'styled-components';
 import {alcOrNot, search} from '../net/search';
 import SwitchSelector from 'react-native-switch-selector';
+import _ from 'lodash';
+import AlphabetListView from 'react-native-alphabetlistview';
+import RenderList from '../components/RenderList';
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -22,31 +25,28 @@ const Button = styled.Button``;
 const List = styled.ScrollView`
   flex: 1;
 `;
-const ListItem = styled.TouchableOpacity`
-  height: 40px;
-  border-bottom-width: 1px;
-  border-bottom-color: #e5e5e5;
-  justify-content: center;
-  margin-left: 12px;
-`;
-const ListText = styled.Text`
-  font-size: 14px;
-`;
+
 const Search = ({navigation}) => {
   const [keyword, setKeyword] = useState('');
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [option, setOption] = useState('all');
-  const options = [
+  const isAlcOpt = [
     {label: 'View Alcoholic', value: 'Alcoholic'},
     {label: 'View All kind', value: 'all'},
     {label: 'View Non-Alcoholic', value: 'Non_Alcoholic'},
   ];
+
   const searchData = async () => {
     try {
       setIsLoading(true);
       const result = await search(keyword);
-      setData(result.data.drinks);
+      const orderedResult = _.orderBy(
+        result.data.drinks,
+        [drinks => _.upperFirst(drinks.strDrink)],
+        ['asc'],
+      );
+      setData(orderedResult);
       setKeyword('');
       setIsLoading(false);
     } catch (err) {
@@ -60,7 +60,7 @@ const Search = ({navigation}) => {
   return (
     <Container>
       <SwitchSelector
-        options={options}
+        options={isAlcOpt}
         initial={1}
         onPress={value => {
           setIsLoading(true);
@@ -97,21 +97,7 @@ const Search = ({navigation}) => {
         {isLoading ? (
           <ActivityIndicator size="small" />
         ) : (
-          data?.map(item => {
-            return (
-              <ListItem
-                key={item.idDrink}
-                onPress={() => {
-                  navigation.navigate('Details', {
-                    id: item.idDrink,
-                    name: item.strDrink,
-                    image: item.strDrinkThumb,
-                  });
-                }}>
-                <ListText>{item.strDrink}</ListText>
-              </ListItem>
-            );
-          })
+          <RenderList navigation={navigation} data={data} />
         )}
       </List>
     </Container>
