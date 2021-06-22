@@ -20,10 +20,12 @@ const HeaderImg = styled.Image`
 const Center = styled.View`
   align-items: center;
 `;
-const HeaderBox = styled.ImageBackground`
-  padding-top: 12px;
+const HeaderBox = styled.ImageBackground``;
+const LightBulb = styled.View`
+  background-color: rgba(255, 255, 255, 0.3);
 `;
 const HeaderText = styled.Text`
+  margin-top:12px
   font-size: 24px;
   font-weight: bold;
 `;
@@ -67,7 +69,7 @@ const Details = ({navigation, route}) => {
   useEffect(() => {
     searchById(Number(route.params.id))
       .then(result => setData(result.data.drinks[0]))
-      .then(setIsLoading(false));
+      .finally(() => setIsLoading(false));
   }, []);
   const renderIngredients = obj => {
     let ingredients = [];
@@ -108,15 +110,17 @@ const Details = ({navigation, route}) => {
         <>
           <ScrollView>
             <HeaderBox blurRadius={20} source={{uri: data.strDrinkThumb}}>
-              <Center>
-                <HeaderText>{data.strDrink}</HeaderText>
-              </Center>
-              <Row>
-                <HeaderImg source={{uri: data.strDrinkThumb}} />
-                <TagsBox>
-                  <Tags>{data.strCategory}</Tags>
-                </TagsBox>
-              </Row>
+              <LightBulb>
+                <Center>
+                  <HeaderText>{data.strDrink}</HeaderText>
+                </Center>
+                <Row>
+                  <HeaderImg source={{uri: data.strDrinkThumb}} />
+                  <TagsBox>
+                    <Tags>{data.strCategory}</Tags>
+                  </TagsBox>
+                </Row>
+              </LightBulb>
             </HeaderBox>
             <Content>
               <BigText>Ingredients?</BigText>

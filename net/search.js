@@ -53,3 +53,14 @@ export const getLatest = async () => {
     return err;
   }
 };
+
+export const alcOrNot = async keyword => {
+  try {
+    const url = `https://www.thecocktaildb.com/api/json/v2/${KEY}/filter.php?a=${keyword}`;
+    const data = await axios.get(url);
+
+    return data;
+  } catch (err) {
+    return err;
+  }
+};

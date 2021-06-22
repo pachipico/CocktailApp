@@ -5,7 +5,6 @@ import RenderCarousel from '../components/RenderCarousel';
 import RenderHorizontal from '../components/RenderHorizontal';
 import {getLatest, getPopular, getRandom} from '../net/search';
 import tinycolor from 'tinycolor2';
-import ImageColors from 'react-native-image-colors';
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -20,6 +19,9 @@ const ScrollView = styled.ScrollView`
   flex: 1;
 `;
 const HeaderBox = styled.ImageBackground``;
+const LightBulb = styled.View`
+  background-color: rgba(255, 255, 255, 0.1);
+`;
 
 const Home = ({navigation}) => {
   const [popular, setPopular] = useState([]);
@@ -28,6 +30,7 @@ const Home = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [snapIndex, setSnapIndex] = useState(0);
+
   useEffect(() => {
     getPopular()
       .then(response => {
@@ -43,7 +46,7 @@ const Home = ({navigation}) => {
           setLatest(response.data.drinks);
         }),
       )
-      .then(setIsLoading(false));
+      .finally(() => setIsLoading(false));
     let color = tinycolor('#aaaaaa');
     console.log(color.getBrightness());
   }, []);
@@ -56,13 +59,8 @@ const Home = ({navigation}) => {
         setRefreshing(false);
       });
   }, []);
-  const onSnapChange = async (index = 0) => {
+  const onSnapChange = (index = 0) => {
     setSnapIndex(index);
-    let URI = random[index].strDrinkThumb;
-    let colors = await ImageColors.getColors(URI);
-    let color = tinycolor(colors.primary);
-
-    console.log(color.getBrightness());
   };
   return (
     <Container>
@@ -77,13 +75,15 @@ const Home = ({navigation}) => {
               source={{
                 uri: random[snapIndex]?.strDrinkThumb,
               }}
-              blurRadius={68}>
-              <Label>How About...</Label>
-              <RenderCarousel
-                onSnapChange={onSnapChange}
-                random={random}
-                navigation={navigation}
-              />
+              blurRadius={20}>
+              <LightBulb>
+                <Label>How About...</Label>
+                <RenderCarousel
+                  onSnapChange={onSnapChange}
+                  random={random}
+                  navigation={navigation}
+                />
+              </LightBulb>
             </HeaderBox>
             <RenderHorizontal
               navigation={navigation}

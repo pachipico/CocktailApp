@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {useEffect} from 'react';
 import {ActivityIndicator} from 'react-native';
-
 import styled from 'styled-components';
-import {search} from '../net/search';
+import {alcOrNot, search} from '../net/search';
+import SwitchSelector from 'react-native-switch-selector';
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -36,11 +36,18 @@ const Search = ({navigation}) => {
   const [keyword, setKeyword] = useState('');
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [option, setOption] = useState('all');
+  const options = [
+    {label: 'View Alcoholic', value: 'Alcoholic'},
+    {label: 'View All kind', value: 'all'},
+    {label: 'View Non-Alcoholic', value: 'Non_Alcoholic'},
+  ];
   const searchData = async () => {
     try {
       setIsLoading(true);
       const result = await search(keyword);
       setData(result.data.drinks);
+      setKeyword('');
       setIsLoading(false);
     } catch (err) {
       setIsLoading(false);
@@ -52,12 +59,33 @@ const Search = ({navigation}) => {
   }, []);
   return (
     <Container>
+      <SwitchSelector
+        options={options}
+        initial={1}
+        onPress={value => {
+          setIsLoading(true);
+          if (value === 'all') {
+            searchData();
+          } else {
+            alcOrNot(value)
+              .then(result => {
+                setData(result.data.drinks);
+              })
+              .catch(err => {
+                alert(err.message);
+              })
+              .finally(() => setIsLoading(false));
+          }
+          setOption(value);
+        }}
+      />
       <InputBox>
         <Input
           value={keyword}
           onChangeText={text => setKeyword(text)}
           placeholder="Search Cocktails!"
         />
+
         <Button
           title="Search"
           onPress={() => {
